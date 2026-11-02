@@ -16,7 +16,7 @@ def test_verdict_a_zahlen_und_text():
     kind, text = ev.verdict_a(_a(1.13))
     assert kind == "success"
     assert "Bei Vertrauen λ = 0.25 und Fehlerquote 0 % zahlt die Regel im Mittel das **1.13-Fache** des Optimums; ohne Vorhersage (Break-even, λ = 1) sind es 1.63." in text
-    assert "Konsistenz 1.20, Robustheit 4.95." in text and "Das beste λ für diese Fehlerquote ist 0.1 (1.03)." in text
+    assert "Konsistenz 1.20, Robustheit 4.95." in text and "Das beste λ für diese Fehlerquote (bei dieser Dauerverteilung) ist 0.1 (1.03)." in text
     assert "mehr als gar keine Vorhersage" not in text
 
 

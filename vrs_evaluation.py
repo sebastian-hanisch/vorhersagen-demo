@@ -130,7 +130,7 @@ def verdict_a(a: AnalysisA) -> tuple[str, str]:
     """Kernfrage Teil A: Zahlt sich das Vertrauen in die Vorhersage bei dieser Fehlerquote aus?"""
     s = a.settings
     text = (f"Bei Vertrauen λ = {s.lam:g} und Fehlerquote {s.p * 100:.0f} % zahlt die Regel im Mittel das **{a.ratio:.2f}-Fache** des Optimums; ohne Vorhersage (Break-even, λ = 1) sind es {a.breakeven:.2f}. "
-            f"Konsistenz {a.cons:.2f}, Robustheit {a.rob:.2f}. Das beste λ für diese Fehlerquote ist {a.best_lam:g} ({a.best_ratio:.2f}).")
+            f"Konsistenz {a.cons:.2f}, Robustheit {a.rob:.2f}. Das beste λ für diese Fehlerquote (bei dieser Dauerverteilung) ist {a.best_lam:g} ({a.best_ratio:.2f}).")
     if a.ratio <= 0.9 * a.breakeven:
         kind = "success"
     elif a.ratio <= a.breakeven + 1e-9:

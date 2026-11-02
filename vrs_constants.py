@@ -16,7 +16,7 @@ FOLGEN = ("Zipf", "Arbeitsmengen", "Schleife mit Fremdzugriffen")
 DEFAULT_FOLGE = "Zipf"
 FOLGE_HILFE = {
     "Zipf": "Wenige Seiten werden oft angefragt, die meisten selten (4k Seiten).",
-    "Arbeitsmengen": "Jede Phase nutzt k + 2 Seiten, die nächste Phase andere: LRU ist hier gut, falsche Vorhersagen schaden am meisten.",
+    "Arbeitsmengen": "Jede Phase nutzt k + 2 Seiten, die nächste Phase andere: LRU ist hier vergleichsweise gut, falsche Vorhersagen schaden der ungeschützten Regel am meisten.",
     "Schleife mit Fremdzugriffen": "Eine Schleife über k + 1 Seiten, dazwischen seltene Fremdzugriffe: LRU ist hier schlecht.",
 }
 K_MIN, K_MAX, DEFAULT_K = 4, 16, 10
@@ -27,11 +27,11 @@ DEFAULT_VORHERSAGE = "exakt"
 VORHERSAGE_ANTEIL = {"exakt": 0.0, "5 % falsch": 0.05, "25 % falsch": 0.25, "50 % falsch": 0.5, "alle zufällig": 1.0}
 VORHERSAGE_HILFE = {
     "exakt": "Jede Vorhersage der nächsten Ankunft stimmt.",
-    "5 % falsch": "Jede zwanzigste Vorhersage ist durch eine zufällige Zeit ersetzt.",
-    "25 % falsch": "Jede vierte Vorhersage ist durch eine zufällige Zeit ersetzt.",
-    "50 % falsch": "Jede zweite Vorhersage ist durch eine zufällige Zeit ersetzt.",
+    "5 % falsch": "Jede Vorhersage wird mit 5 % Wahrscheinlichkeit durch eine zufällige Zeit ersetzt (im Mittel jede zwanzigste).",
+    "25 % falsch": "Jede Vorhersage wird mit 25 % Wahrscheinlichkeit durch eine zufällige Zeit ersetzt (im Mittel jede vierte).",
+    "50 % falsch": "Jede Vorhersage wird mit 50 % Wahrscheinlichkeit durch eine zufällige Zeit ersetzt (im Mittel jede zweite).",
     "alle zufällig": "Alle Vorhersagen sind zufällige Zeiten: die Vorhersage trägt keine Information.",
-    "gegnerisch": "Eine Seite, die bald kommt, sieht fern aus, und umgekehrt: die schlechtestmögliche Ordnung.",
+    "gegnerisch": "Eine Seite, die bald kommt, sieht fern aus, und umgekehrt: die umgekehrte Ordnung der wahren Ankunftszeiten, für die ungeschützte Regel nahezu die schlechteste.",
 }
 RANDOM_SPAN = 100              # zufällige Vorhersage: 1 bis RANDOM_SPAN Schritte voraus
 GEGNER_CAP = 5000
@@ -39,7 +39,7 @@ VERFAHREN = ("LRU", "Vorhersage ungeschützt", "Marker mit Vorhersage", "Verfolg
 DEFAULT_VERFAHREN = "Marker mit Vorhersage"
 VERFAHREN_HILFE = {
     "LRU": "Verdrängt die am längsten ungenutzte Seite; braucht keine Vorhersage und hat die Garantie k.",
-    "Vorhersage ungeschützt": "Verdrängt die Seite, die laut Vorhersage am spätesten wieder kommt. Mit richtigen Vorhersagen ist das optimal (Belady), mit falschen unbeschränkt schlecht.",
+    "Vorhersage ungeschützt": "Verdrängt die Seite, die laut Vorhersage am spätesten wieder kommt. Mit richtigen Vorhersagen ist das optimal (Belady), mit falschen theoretisch ohne Schranke schlecht.",
     "Marker mit Vorhersage": "Nur unmarkierte Seiten (seit Phasenbeginn nicht angefragt) dürfen weichen, unter ihnen nach der Vorhersage. Jedes Marker-Verfahren ist k-kompetitiv, auch mit falscher Vorhersage.",
     "Verfolger": "Folgt träge dem besseren von „Vorhersage ungeschützt“ und LRU und wechselt erst bei mehr als k Fehlern Vorsprung (eigene einfache Fassung).",
 }
@@ -68,9 +68,9 @@ PRESETS = {
 }
 PRESET_HELP = {
     "Klassisch (λ = 0,25, richtige Vorhersage)": "Mieten oder Kaufen mit richtiger Vorhersage und viel Vertrauen: die Kosten liegen nahe am Optimum, dafür ist die Robustheit schwach.",
-    "Falsche Vorhersage (50 %)": "Jede zweite Vorhersage ist vertauscht: das Vertrauen kostet mehr als die Break-even-Regel ohne Vorhersage.",
+    "Falsche Vorhersage (50 %)": "Mit 50 % Wahrscheinlichkeit ist die Vorhersage vertauscht: das Vertrauen kostet mehr als die Break-even-Regel ohne Vorhersage.",
     "Ohne Vorhersage (λ = 1)": "Die Break-even-Regel: kauft am Tag B, ignoriert die Vorhersage und gilt in jedem Fall.",
     "Arbeitsmengen, 25 % falsch": "Auf Arbeitsmengen kippt die ungeschützte Vorhersage schon bei einem Viertel falscher Vorhersagen weit über LRU.",
-    "Gegnerische Vorhersage": "Die schlechtestmögliche Vorhersage: die ungeschützte Regel wird mehrfach so teuer wie LRU, der Marker bleibt beschränkt.",
+    "Gegnerische Vorhersage": "Die umgekehrte Ordnung der Ankunftszeiten, für die ungeschützte Regel nahezu die schlechteste Vorhersage: sie wird mehrfach so teuer wie LRU, der Marker bleibt beschränkt.",
     "Zipf, exakt (Verfolger)": "Der Verfolger folgt bei richtiger Vorhersage der Vorhersage und ist optimal.",
 }

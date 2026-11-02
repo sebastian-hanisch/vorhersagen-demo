@@ -87,7 +87,7 @@ st.markdown(
 **Schlussstück der Reihe „Online-Algorithmen“** (Entscheiden ohne Kenntnis der Zukunft). Die Stücke davor messen eine Garantie **gegen** einen Gegner; im Betrieb gibt es aber oft eine **Vorhersage**, und die kann gut sein. Zwei Fragen stehen nebeneinander:
 
 - **Teil A, Mieten oder Kaufen:** Eine Vorhersage sagt, ob das Gerät länger als der Kaufpreis gebraucht wird. Ein Regler **λ** legt fest, wie sehr die Regel ihr traut: **Konsistenz** (Quotient bei richtiger Vorhersage) gegen **Robustheit** (Quotient im schlechtesten Fall).
-- **Teil B, Paging:** Eine Vorhersage sagt, wann jede Seite wieder gebraucht wird. Wer sie blind befolgt, ist bei richtiger Vorhersage optimal und bei falscher unbeschränkt schlecht; **Marker** und **Verfolger** sichern sich ab und zahlen dafür.
+- **Teil B, Paging:** Eine Vorhersage sagt, wann jede Seite wieder gebraucht wird. Wer sie blind befolgt, ist bei richtiger Vorhersage optimal und bei falscher theoretisch ohne Schranke schlecht (hier gemessen bis zum 9,7-Fachen von Belady); **Marker** und **Verfolger** sichern sich ab und zahlen dafür.
 
 Beide Teile haben ihre eigenen Regler in der Seitenleiste. Weiter unten: die **Kernfrage** je Teil, fünf Experimente (**Kompromisskurve**, **Fehlerquote und Vertrauen**, **Qualität der Vorhersage**, **gegnerische Vorhersage**, **Preis der Konsistenz**), **🚧 Wo die Annahmen enden**, **⚠️ Annahmen, Grenzen und bekannte Probleme** und **📐 Mathematische Formulierung**.
 """
@@ -205,7 +205,7 @@ getattr(st, kind)(text)
 st.markdown("---")
 
 st.subheader("🔬 Experiment B2: Gegnerische Vorhersage")
-st.caption("Die schlechtestmögliche Ordnung: Eine Seite, die bald kommt, sieht fern aus, und umgekehrt (k = 10, derselbe Lauf wie in B1).")
+st.caption("Die umgekehrte Ordnung der wahren Ankunftszeiten, für die ungeschützte Regel nahezu die schlechteste: Eine Seite, die bald kommt, sieht fern aus, und umgekehrt (k = 10, derselbe Lauf wie in B1).")
 st.plotly_chart(build_gegner(rows_qu), width="stretch", key="gegner_chart")
 kind, text = verdict_gegner(rows_qu)
 getattr(st, kind)(text)
@@ -230,7 +230,7 @@ st.markdown(
 | **Die Vorhersage ist gespielt** (richtig, mit Quote falsch, gegnerisch) | Ein echter Vorhersager hat Fehler, die mit der Lage zusammenhängen; wie ein Fehlermaß η die Garantie verschiebt, steht nur in der Literatur, nicht in der Demo. | `forecast-interval-demo`, `forecast-combination-demo` |
 | **Die Fehlerquote ist bekannt** (Teil A, bestes λ) | Wer λ nach der wahren Fehlerquote wählt, kennt sie; in der Praxis muss sie geschätzt werden, und eine falsche Schätzung kostet wie zu viel Vertrauen (Experiment A2). | – |
 | **Eine Vorhersage je Seite und Anfrage** (Teil B) | Vorhersagen mit Konfidenz, Intervallen oder nur Rangfolgen sind eigene Modelle. | – |
-| **Der Verfolger kombiniert nur zwei Verfahren** | Er sichert gegen LRU ab, nicht gegen jede Alternative; auf Arbeitsmengen liegt der Marker weit darunter (Experiment B1). | – |
+| **Der Verfolger kombiniert nur zwei Verfahren** | Er sichert gegen LRU ab, nicht gegen jede Alternative; auf Arbeitsmengen liegt der Marker bei 5 % bis 50 % falschen Vorhersagen unter dem Verfolger (um 14 bis 40 %, Experiment B1). | – |
 | **Learning-augmented heißt hier: Online-Algorithmus mit Vorhersage** | Nicht verwechseln mit gelernten Modellen in verteilter Optimierung. | `ladcop-demo` |
 """
 )
@@ -242,7 +242,7 @@ with st.expander("⚠️ Annahmen, Grenzen und bekannte Probleme"):
 
 **Grenzen.** Die Demo ist nur an erfundenen Folgen und gespielten Vorhersagen geprüft. Die Kauftag-Regel (⌈λB⌉ bei „lang“, ⌈B/λ⌉ bei „kurz“) ist aus dem Gedächtnis eingesetzt; sie reproduziert die in der Literatur genannten Quotienten 1 + λ und 1 + 1/λ, belegt aber nicht die Quelle. Der **Verfolger** ist eine eigene einfache Fassung (träge nachahmen, Wechsel erst bei mehr als k Fehlern Vorsprung), keine nachgebaute Arbeit. Bei exakter Vorhersage ist die ungeschützte Regel gleich Belady; die Schärfe der Robustheit in Teil B hängt von der Folge ab.
 
-**Bekannte Probleme und Unsicherheiten.** Ob die ungeschützte Regel bei **wenigen** falschen Vorhersagen schon über LRU liegt, hängt vom Seed ab (bei 5 % auf den Arbeitsmengen schwankt sie je nach Seed zwischen unter und über LRU); bei 25 % und mehr ist sie klar schlechter. Die Zahlen in Teil B sind Mittel über vier Seeds.
+**Bekannte Probleme und Unsicherheiten.** Ob die ungeschützte Regel bei **wenigen** falschen Vorhersagen schon über LRU liegt, hängt vom Seed ab (bei 5 % auf den Arbeitsmengen schwankt sie je nach Seed zwischen unter und über LRU); bei 25 % und mehr ist sie auf den Arbeitsmengen mit k = 10 klar schlechter (nicht auf Zipf oder der Schleife). Die Zahlen der Experimente B1 bis B3 sind Mittel über vier Seeds; das Ergebnis oben gilt für den gewählten einzelnen Seed.
         """
     )
 
@@ -271,7 +271,7 @@ $\bar c_M(d)$ der mittlere Aufwand über die Dauern in $M$.
 
 **Paging.** Die Vorhersage nennt zu jeder Anfrage die Zeit $\hat a_t$ der nächsten Anfrage derselben Seite. **Ungeschützt:** verdränge die Seite mit größtem $\hat a$ (mit $\hat a = a$ ist das Belady). **Marker:** wie ungeschützt, aber nur unter den unmarkierten Seiten (eine Seite wird bei Anfrage markiert, die Marken verfallen, wenn alle Seiten markiert sind); jedes Marker-Verfahren hat höchstens $k \cdot \mathrm{OPT} + k$ Fehler. **Verfolger:** der echte Speicher ahmt träge den Speicher des Verfolgten nach; Wechsel, wenn der andere um mehr als $k$ Fehler besser liegt.
 
-**Literatur (nicht nachgebaut; Auszüge per Websuche gesehen, Volltexte nicht eingesehen).** Konsistenz $1+\lambda$ und Robustheit $1+1/\lambda$ für Mieten oder Kaufen mit Vorhersage: R. Kumar, M. Purohit, Z. Svitkina, *Improving Online Algorithms via ML Predictions* (NeurIPS 2018). Paging mit Vorhersage: T. Lykouris, S. Vassilvitskii, *Competitive Caching with Machine Learned Advice* (ICML 2018, J. ACM 2021). Überblick: M. Mitzenmacher, S. Vassilvitskii, *Algorithms with Predictions* (CACM 2022). Hier sind die Zahlen durch vollständiges Durchrechnen und Stichproben belegt, nicht bewiesen.
+**Literatur (nicht nachgebaut; Auszüge per Websuche gesehen, Volltexte nicht eingesehen).** Konsistenz $1+\lambda$ und Robustheit $1+1/\lambda$ für Mieten oder Kaufen mit Vorhersage: M. Purohit, Z. Svitkina, R. Kumar, *Improving Online Algorithms via ML Predictions* (NeurIPS 2018). Paging mit Vorhersage: T. Lykouris, S. Vassilvitskii, *Competitive Caching with Machine Learned Advice* (ICML 2018, J. ACM 2021). Überblick: M. Mitzenmacher, S. Vassilvitskii, *Algorithms with Predictions* (CACM 2022). Hier sind die Zahlen durch vollständiges Durchrechnen und Stichproben belegt, nicht bewiesen.
         """
     )
 
