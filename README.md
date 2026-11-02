@@ -1,7 +1,6 @@
 # Vorhersagen – wie viel darf man einer Vorhersage trauen? – Streamlit-Demo
 
-<!-- TODO nach dem Deploy: direkt hierher den Live-Link setzen (Leerzeile davor und danach):
-**[→ Demo live ausprobieren](https://sebastianhanisch-vorhersagen-demo.streamlit.app/)** -->
+**[→ Demo live ausprobieren](https://sebastianhanisch-vorhersagen-demo.streamlit.app/)**
 
 Schlussstück der Reihe **Online-Algorithmen** („Entscheiden ohne Kenntnis der Zukunft“) in der „Konzepte“-Reihe für die Website „Sebastian Hanisch – Operations Research und Machine Learning“, Kind von [ski-rental-demo](https://github.com/sebastian-hanisch/ski-rental-demo) (der Wurzel) und [paging-demo](https://github.com/sebastian-hanisch/paging-demo), die hier beide um eine Vorhersage erweitert werden.
 Anders als die Fall-Demos (ein Anwendungsfall, mehrere Verfahren im Vergleich) zeigt diese Demo **ein** Konzept, **den Kompromiss zwischen Konsistenz und Robustheit**, an einem wachsenden Beispiel: erst an Mieten oder Kaufen mit einem Vertrauensregler λ, dann am Paging, wo eine blind befolgte Vorhersage zum Risiko wird.
@@ -116,4 +115,4 @@ Gebaut mit Streamlit, Plotly, NumPy und pandas.
 
 ---
 
-Diese Demo ist Teil des Portfolios von [Sebastian Hanisch](https://sebastianhanisch.net) – Operations Research und Machine Learning ([Über mich](https://sebastianhanisch.net/ueber-mich.html)). Mehr zu den Demos: [Interaktive Demos](https://sebastianhanisch.net/demos.html).
+Diese Demo ist Teil des Portfolios von [Sebastian Hanisch](https://sebastianhanisch.net) – Operations Research und Machine Learning ([Über mich](https://sebastianhanisch.net/ueber-mich.html)). Mehr zur Reihe: [Online-Algorithmen: Entscheiden ohne Zukunft](https://sebastianhanisch.net/konzepte-online-algorithmen.html).
